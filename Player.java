@@ -13,6 +13,13 @@ public class Player {
         this.dmg -= dmgTaken;
     }
 
+    public void heal(Item healingItem) {
+        if (healingItem.getHP() > 0 && inventory.contains(healingItem)) {
+            hp += healingItem.getHP();
+            inventory.remove(healingItem);
+        }
+    }
+
     public int getDmg() {
         return this.dmg;
     }
