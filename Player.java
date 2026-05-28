@@ -5,16 +5,19 @@ public class Player {
     private int posy;
     private int hp;
     private int dmg;
+    private int def;
+    private int points;
     ArrayList<Item> inventory = new ArrayList<>();
 
     public void pickUpItem(Item item) {
         inventory.add(item);
     }
 
-    public void equip(Item dmgItem) {
-        if (dmgItem.getDmg() > 0 && inventory.contains(dmgItem)) {
-            dmg += dmgItem.getDmg();
-            inventory.remove(dmgItem);
+    public void equip(Item Item) {
+        if (inventory.contains(Item)) {
+            dmg += Item.getDmg();
+            def += Item.getDef();
+            inventory.remove(Item);
         }
     }
 
@@ -29,6 +32,14 @@ public class Player {
         }
     }
 
+    public int getPoints() {
+        return points;
+    }
+
+    public void addPoints(int pts) {
+        points += pts;
+    }
+
     public int getDmg() {
         return this.dmg;
     }
@@ -37,12 +48,24 @@ public class Player {
         return this.hp;
     }
 
+    public int getDef() {
+        return def;
+    }
+
     public int getPosx() {
         return posx;
     }
 
     public int getPosy() {
         return posy;
+    }
+
+    public void setPosx(int posx) {
+        this.posx = posx;
+    }
+
+    public void setPosy(int posy) {
+        this.posy = posy;
     }
 
     public ArrayList<Item> getInventory() {

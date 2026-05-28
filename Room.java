@@ -37,8 +37,8 @@ public class Room {
         this.roomType = roomType;
     }
 
-    public ArrayList<String> rollLoot(Room room) {
-        ArrayList<String> loot = new ArrayList<>();
+    public ArrayList<Item> rollLoot(Room room) {
+        ArrayList<Item> loot = new ArrayList<>();
 
         //NOTE: All loot rooms will have 4 chests.
 
@@ -46,35 +46,31 @@ public class Room {
             while (loot.size() < 4) {
                 // 1. Shield (50%)
                 if (random.nextDouble() < 0.50) {
-                    loot.add("Shield");
+                    loot.add(new Item("Shield", 0, 0, 5));
                 }
                 // 2. Bulwark (12.5%)
                 if (random.nextDouble() < 0.125) {
-                    loot.add("Bulwark");
+                    loot.add(new Item("Bulwark", 0, 0, 15));
                 }
                 // 3. Diamond Sword (25%)
                 if (random.nextDouble() < 0.25) {
-                    loot.add("Diamond Sword");
+                    loot.add(new Item("Diamond Sword", 20, 0, 0));
                 }
                 // 4. Excalibur (6.25%)
                 if (random.nextDouble() < 0.0625) {
-                    loot.add("Excalibur");
+                    loot.add(new Item("Excalibur", 40, 0, 0));
                 }
                 // 5. Small Heal (100%)
                 if (random.nextDouble() < 1.00) {
-                    loot.add("Small Heal");
+                    loot.add(new Item("Small Heal", 0, 15, 0));
                 }
                 // 6. Large Heal (35%)
                 if (random.nextDouble() < 0.35) {
-                    loot.add("Large Heal");
+                    loot.add(new Item("Large Heal", 0, 50, 0));
                 }
                 // 7. Revive (10%)
                 if (random.nextDouble() < 0.10) {
-                    loot.add("Revive");
-                }
-                // 8. Charm of Lasagna (20%)
-                if (random.nextDouble() < 0.20) {
-                    loot.add("Charm of Lasagna");
+                    loot.add(new Item("Revive", 0, 100, 0));
                 }
             }
         }
