@@ -23,6 +23,7 @@ public class Game {
         while (gameEnd == false) {
             Room currentRoom = mainGrid[player.getPosy()][player.getPosx()];
 
+            System.out.println("You are in a " + currentRoom.getRoomType() + " room.");
             switch (currentRoom.getRoomType()) {
                 case "battle":
                     Battle(currentRoom, dungeon, player);
