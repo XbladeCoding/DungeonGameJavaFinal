@@ -9,6 +9,14 @@ public class Player {
     private int points;
     ArrayList<Item> inventory = new ArrayList<>();
 
+    public Player(int hp, int dmg, int def, int points, ArrayList<Item> inventory) {
+        this.hp = hp;
+        this.dmg = dmg;
+        this.def = def;
+        this.points = points;
+        this.inventory = inventory;
+    }
+
     public void pickUpItem(Item item) {
         inventory.add(item);
     }
@@ -22,7 +30,7 @@ public class Player {
     }
 
     public void takeDmg(int dmgTaken) {
-        this.dmg -= dmgTaken;
+        this.hp -= dmgTaken;
     }
 
     public void heal(Item healingItem) {
@@ -49,15 +57,15 @@ public class Player {
     }
 
     public int getDef() {
-        return def;
+        return this.def;
     }
 
     public int getPosx() {
-        return posx;
+        return this.posx;
     }
 
     public int getPosy() {
-        return posy;
+        return this.posy;
     }
 
     public void setPosx(int posx) {
