@@ -101,7 +101,10 @@ public class Game {
 
             System.out.println("Would you like to heal? (Y/N)");
             if (scanner.next().charAt(0) == 'Y') {
-                int healind = 0;
+                if (player.getInventory().isEmpty()) {
+                        System.out.println("No items available.");
+                } else {
+                    int healind = 0;
                 System.out.println("Here are the items available: ");
                 for (int i = 0; i < player.getInventory().size(); i++) {
                     System.out.print(player.getInventory().get(i).getName());
@@ -110,6 +113,7 @@ public class Game {
                 System.out.println("Which one would you like to use? (Enter index)");
                 player.heal(player.getInventory().get(healind));
                 System.out.println("Your HP: " + player.getHp());
+                }
             }
         }
     }
@@ -123,21 +127,22 @@ public class Game {
             System.out.println("You can heal (H), loot (L), or equip (E).");
             switch (scanner.next().charAt(0)) {
                 case 'H':
-                    int healind;
-                    if (player.getInventory().isEmpty()) {
-                        System.out.println("No items available.");
-                        break;
+                    System.out.println("Would you like to heal? (Y/N)");
+                    if (scanner.next().charAt(0) == 'Y') {
+                        if (player.getInventory().isEmpty()) {
+                                System.out.println("No items available.");
+                        } else {
+                            int healind = 0;
+                        System.out.println("Here are the items available: ");
+                        for (int i = 0; i < player.getInventory().size(); i++) {
+                            System.out.print(player.getInventory().get(i).getName());
+                            healind = i;
+                        }
+                        System.out.println("Which one would you like to use? (Enter index)");
+                        player.heal(player.getInventory().get(healind));
+                        System.out.println("Your HP: " + player.getHp());
+                        }
                     }
-                    System.out.println("Here are the items available: ");
-                    for (int i = 0; i < player.getInventory().size(); i++) {
-                        System.out.print(player.getInventory().get(i).getName() + "");
-                    }
-                    System.out.println("");
-                    System.out.println("Which one would you like to use? (Enter index) 0-n");
-                    healind = scanner.nextInt();
-                    scanner.nextLine();
-                    player.heal(player.getInventory().get(healind));
-                    System.out.println("Your HP: " + player.getHp());
                     break;
                 case 'L':
                     System.out.println("Here are the items in the room: ");
@@ -151,16 +156,21 @@ public class Game {
                     loot.remove(itemInd);
                     break;
                 case 'E':
-                    System.out.println("Here is your current inventory: ");
-                    for (int i = 0; i < player.getInventory().size(); i++) {
-                        System.out.print(player.getInventory().get(i).getName() + ", ");
+                    if (player.getInventory().isEmpty()) {
+                        System.out.println("No items available.");
+                        break;
+                    } else {
+                        System.out.println("Here is your current inventory: ");
+                        for (int i = 0; i < player.getInventory().size(); i++) {
+                            System.out.print(player.getInventory().get(i).getName() + ", ");
+                        }
+                        System.out.println("What shall you equip? (give an index)");
+                        int equipind = scanner.nextInt();
+                        scanner.nextLine();
+                        player.equip(player.getInventory().get(equipind));
+                        System.out.println("New stats: Def " + player.getDef() + ", Dmg " + player.getDmg());
+                        break;
                     }
-                    System.out.println("What shall you equip? (give an index)");
-                    int equipind = scanner.nextInt();
-                    scanner.nextLine();
-                    player.equip(player.getInventory().get(equipind));
-                    System.out.println("New stats: Def " + player.getDef() + ", Dmg " + player.getDmg());
-                    break;
             }
             turns++;
         }
@@ -204,15 +214,20 @@ public class Game {
                 boss.takeDamage(player.getDmg());
                 System.out.println("The boss now has " + boss.getHp() + "HP.");
             } else if (decision == 'H') {
-                int healind = 0;
-                System.out.println("Here are the items available: ");
-                for (int i = 0; i < player.getInventory().size(); i++) {
-                    System.out.print(player.getInventory().get(i).getName());
-                    healind = i;
+                if (player.getInventory().isEmpty()) {
+                        System.out.println("No items available.");
+                        break;
+                } else {
+                    int healind = 0;
+                    System.out.println("Here are the items available: ");
+                    for (int i = 0; i < player.getInventory().size(); i++) {
+                        System.out.print(player.getInventory().get(i).getName());
+                        healind = i;
+                    }
+                    System.out.println("Which one would you like to use? (Enter index 0-n)");
+                    player.heal(player.getInventory().get(healind));
+                    System.out.println("Your HP: " + player.getHp());
                 }
-                System.out.println("Which one would you like to use? (Enter index 0-n)");
-                player.heal(player.getInventory().get(healind));
-                System.out.println("Your HP: " + player.getHp());
             }
 
             System.out.println("The boss deals " + (boss.getDmg() - player.getDef()) + "HP of damage to you.");
