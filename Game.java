@@ -1,5 +1,13 @@
 /*
+This is a simple dungeon crawler game made for the Final Java Project.
+It consists of an n-by-n grid of Rooms, where a Player has to defeat Monsters and collect Items to use against those Monsters.
+The Player starts with 3 healing Items, to increase playability.
+The Player wins when it defeats the Boss (a high-HP and high-damage Monster) or when it collects more than 1000000000 points.
+The Player loses when it falls below 0 HP. 
 
+Author: Rohan Balasubramanian
+Language: Java 24.0.2
+DOC: 5/30/2026
 */
 
 import java.util.ArrayList;
@@ -18,6 +26,9 @@ public class Game {
         scanner.nextLine();
         Room[][] mainGrid = new Room[diff][diff];
         ArrayList<Item> inv = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            inv.add(new Item("Basic Heal", 0, 16, 0));
+        }
 
         Player player = new Player(100, 10, 0, 0, inv);
         Dungeon dungeon = new Dungeon(diff, mainGrid);
