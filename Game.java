@@ -60,6 +60,18 @@ public class Game {
             System.out.println("Where would you like to move? (north/south/east/west)");
             String dir = scanner.nextLine();
             player.move(dir);
+            if (player.getPosx() == diff) {
+                player.setPosx(0);
+            }
+            if (player.getPosy() == diff) {
+                player.setPosy(0);
+            }
+            if (player.getPosx() == -1) {
+                player.setPosx(diff - 1);
+            }
+            if (player.getPosy() == -1) {
+                player.setPosy(diff - 1);
+            }
         }
 
         System.out.println("Thank you for playing the game!");
@@ -115,13 +127,12 @@ public class Game {
                 if (player.getInventory().isEmpty()) {
                         System.out.println("No items available.");
                 } else {
-                    int healind = 0;
                 System.out.println("Here are the items available: ");
                 for (int i = 0; i < player.getInventory().size(); i++) {
                     System.out.print(player.getInventory().get(i).getName());
-                    healind = i;
                 }
                 System.out.println("Which one would you like to use? (Enter index)");
+                int healind = scanner.nextInt();
                 player.heal(player.getInventory().get(healind));
                 System.out.println("Your HP: " + player.getHp());
                 }
@@ -143,13 +154,13 @@ public class Game {
                         if (player.getInventory().isEmpty()) {
                                 System.out.println("No items available.");
                         } else {
-                            int healind = 0;
+                        int healind;
                         System.out.println("Here are the items available: ");
                         for (int i = 0; i < player.getInventory().size(); i++) {
                             System.out.print(player.getInventory().get(i).getName());
-                            healind = i;
                         }
                         System.out.println("Which one would you like to use? (Enter index)");
+                        healind = scanner.nextInt();
                         player.heal(player.getInventory().get(healind));
                         System.out.println("Your HP: " + player.getHp());
                         }
@@ -229,21 +240,17 @@ public class Game {
                         System.out.println("No items available.");
                         break;
                 } else {
-                    int healind = 0;
+                    int healind;
                     System.out.println("Here are the items available: ");
                     for (int i = 0; i < player.getInventory().size(); i++) {
                         System.out.print(player.getInventory().get(i).getName());
-                        healind = i;
                     }
                     System.out.println("Which one would you like to use? (Enter index 0-n)");
+                    healind = scanner.nextInt();
                     player.heal(player.getInventory().get(healind));
                     System.out.println("Your HP: " + player.getHp());
                 }
             }
-
-            System.out.println("The boss deals " + (boss.getDmg() - player.getDef()) + "HP of damage to you.");
-            player.takeDmg(bdmg-player.getDef());
-            System.out.println("You now have " + player.getHp() + "HP left.");
 
             if (boss.getHp() <= 0) {
                 gameEnd = true;
@@ -251,6 +258,10 @@ public class Game {
                 System.out.println("Your score was: " + player.getPoints());
                 System.exit(0);
             }
+
+            System.out.println("The boss deals " + (boss.getDmg() - player.getDef()) + "HP of damage to you.");
+            player.takeDmg(bdmg-player.getDef());
+            System.out.println("You now have " + player.getHp() + "HP left.");
 
             if (player.getHp() <= 0) {
                 gameEnd = true;
