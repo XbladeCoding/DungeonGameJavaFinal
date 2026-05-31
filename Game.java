@@ -22,8 +22,7 @@ public class Game {
     public void mainLoop() {
         System.out.println("Welcome to Simple Dungeon Crawler!");
         System.out.println("Enter a difficulty (1-5): ");
-        int diff = scanner.nextInt();
-        scanner.nextLine();
+        int diff = readIntInRange(1, 5, "Invalid difficulty. Enter a number from 1 to 5.");
         Room[][] mainGrid = new Room[diff][diff];
         ArrayList<Item> inv = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
@@ -87,9 +86,8 @@ public class Game {
         System.out.println("");
 
         while (battleEnd == false) {
-            System.out.println("Which one to attack first? 0 for first, 1 for second, and 2 for third.");
-            int monsterInd = scanner.nextInt();
-            scanner.nextLine();
+            System.out.println("Which one to attack first? Enter an index from 0 to " + (monsters.size() - 1) + ".");
+            int monsterInd = readIntInRange(0, monsters.size() - 1, "Invalid index.");
 
             monsters.get(monsterInd).takeDamage(player.getDmg());
 
@@ -109,8 +107,9 @@ public class Game {
             }
 
             for (int i = 0; i < monsters.size(); i++) {
-                player.takeDmg(monsters.get(i).getDmg() - player.getDef());
-                System.out.println("Monster " + i + " has done " + (monsters.get(i).getDmg() - player.getDef()) + " HP of damage.");
+                int damageTaken = Math.max(0, monsters.get(i).getDmg() - player.getDef());
+                player.takeDmg(damageTaken);
+                System.out.println("Monster " + i + " has done " + damageTaken + " HP of damage.");
                 System.out.println("You have " + player.getHp() + "HP remaining.");
             }
 
@@ -123,7 +122,7 @@ public class Game {
             }
 
             System.out.println("Would you like to heal? (Y/N)");
-            if (scanner.next().charAt(0) == 'Y') {
+                if (readCommandChar("Invalid input.") == 'Y') {
                 if (player.getInventory().isEmpty()) {
                         System.out.println("No items available.");
                 } else {
@@ -132,7 +131,7 @@ public class Game {
                     System.out.print(player.getInventory().get(i).getName());
                 }
                 System.out.println("Which one would you like to use? (Enter index)");
-                int healind = scanner.nextInt();
+                int healind = readIntInRange(0, player.getInventory().size() - 1, "Invalid index.");
                 player.heal(player.getInventory().get(healind));
                 System.out.println("Your HP: " + player.getHp());
                 }
@@ -147,10 +146,10 @@ public class Game {
         while (turns < 6) {
             System.out.println("What would you like to do?");
             System.out.println("You can heal (H), loot (L), or equip (E).");
-            switch (scanner.next().charAt(0)) {
+            switch (readCommandChar("Invalid input.")) {
                 case 'H':
                     System.out.println("Would you like to heal? (Y/N)");
-                    if (scanner.next().charAt(0) == 'Y') {
+                    if (readCommandChar("Invalid input.") == 'Y') {
                         if (player.getInventory().isEmpty()) {
                                 System.out.println("No items available.");
                         } else {
@@ -160,7 +159,7 @@ public class Game {
                             System.out.print(player.getInventory().get(i).getName());
                         }
                         System.out.println("Which one would you like to use? (Enter index)");
-                        healind = scanner.nextInt();
+                        healind = readIntInRange(0, player.getInventory().size() - 1, "Invalid index.");
                         player.heal(player.getInventory().get(healind));
                         System.out.println("Your HP: " + player.getHp());
                         }
@@ -172,8 +171,7 @@ public class Game {
                         System.out.print(loot.get(i).getName() + ", ");
                     }
                     System.out.println("Choose one: (enter index)");
-                    int itemInd = scanner.nextInt();
-                    scanner.nextLine();
+                    int itemInd = readIntInRange(0, loot.size() - 1, "Invalid index.");
                     player.pickUpItem(loot.get(itemInd));
                     loot.remove(itemInd);
                     break;
@@ -187,12 +185,14 @@ public class Game {
                             System.out.print(player.getInventory().get(i).getName() + ", ");
                         }
                         System.out.println("What shall you equip? (give an index)");
-                        int equipind = scanner.nextInt();
-                        scanner.nextLine();
+                        int equipind = readIntInRange(0, player.getInventory().size() - 1, "Invalid index.");
                         player.equip(player.getInventory().get(equipind));
                         System.out.println("New stats: Def " + player.getDef() + ", Dmg " + player.getDmg());
                         break;
                     }
+                default:
+                    System.out.println("Invalid input.");
+                    continue;
             }
             turns++;
         }
@@ -231,7 +231,7 @@ public class Game {
 
         while (gameOver == false) {
             System.out.println("Attack or Heal? (A/H)");
-            char decision = scanner.next().charAt(0);
+            char decision = readCommandChar("Invalid input.");
             if (decision == 'A') {
                 boss.takeDamage(player.getDmg());
                 System.out.println("The boss now has " + boss.getHp() + "HP.");
@@ -246,10 +246,13 @@ public class Game {
                         System.out.print(player.getInventory().get(i).getName());
                     }
                     System.out.println("Which one would you like to use? (Enter index 0-n)");
-                    healind = scanner.nextInt();
+                    healind = readIntInRange(0, player.getInventory().size() - 1, "Invalid index.");
                     player.heal(player.getInventory().get(healind));
                     System.out.println("Your HP: " + player.getHp());
                 }
+            } else {
+                System.out.println("Invalid input.");
+                continue;
             }
 
             if (boss.getHp() <= 0) {
@@ -259,8 +262,9 @@ public class Game {
                 System.exit(0);
             }
 
-            System.out.println("The boss deals " + (boss.getDmg() - player.getDef()) + "HP of damage to you.");
-            player.takeDmg(bdmg-player.getDef());
+            int bossDamageTaken = Math.max(0, bdmg - player.getDef());
+            System.out.println("The boss deals " + bossDamageTaken + "HP of damage to you.");
+            player.takeDmg(bossDamageTaken);
             System.out.println("You now have " + player.getHp() + "HP left.");
 
             if (player.getHp() <= 0) {
@@ -274,5 +278,32 @@ public class Game {
 
     public void endGame() {
         System.out.println("The game has ended.");
+    }
+
+    private char readCommandChar(String errorMessage) {
+        while (true) {
+            String input = scanner.nextLine().trim().toUpperCase();
+            if (!input.isEmpty()) {
+                return input.charAt(0);
+            }
+
+            System.out.println(errorMessage);
+        }
+    }
+
+    private int readIntInRange(int min, int max, String errorMessage) {
+        while (true) {
+            String input = scanner.nextLine().trim();
+
+            try {
+                int value = Integer.parseInt(input);
+                if (value >= min && value <= max) {
+                    return value;
+                }
+            } catch (NumberFormatException ignored) {
+            }
+
+            System.out.println(errorMessage);
+        }
     }
 }

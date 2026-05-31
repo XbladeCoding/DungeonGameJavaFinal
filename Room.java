@@ -82,7 +82,7 @@ public class Room {
         ArrayList<Monster> monsters = new ArrayList<>();
 
         //NOTE: Monsters will never be more than 3.
-        int numMonsters = random.nextInt(1,3);
+        int numMonsters = random.nextInt(1,4);
 
         if (room.roomType.equals("battle")) {
             while (monsters.size() < numMonsters) {

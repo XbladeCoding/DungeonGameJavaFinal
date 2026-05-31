@@ -84,12 +84,19 @@ public class Player {
         switch (direction) {
             case "north":
                 posy++;
+                break;
             case "south":
                 posy--;
+                break;
             case "east":
                 posx++;
+                break;
             case "west":
                 posx--;
+                break;
+            default:
+                System.out.println("Invalid direction.");
+                break;
         }
     }
 }

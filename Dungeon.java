@@ -4,7 +4,7 @@ public class Dungeon {
     Random random = new Random();
 
     int diff;
-    Room[][] dungeon = new Room[diff][diff];
+    Room[][] dungeon;
 
     public Dungeon(int diff, Room[][] dungeon) {
         this.diff = diff;
@@ -24,18 +24,20 @@ public class Dungeon {
         int bry = bossRoomNum/diff;
         int brx = bossRoomNum%diff;
 
-        Room bossRoom = new Room(brx, bry, "boss");
+        dungeon[bry][brx] = new Room(brx, bry, "boss");
 
         for (int i = 0; i < diff; i++) {
             for (int j = 0; j < diff; j++) {
+                if (i == bry && j == brx) {
+                    continue;
+                }
+
                 int randRoom = random.nextInt(2);
 
-                if (dungeon[i][j] != bossRoom) {
-                    if (randRoom == 0) {
-                        dungeon[i][j] = new Room(i, j, "loot");
-                    } else {
-                        dungeon[i][j] = new Room(i, j, "battle");
-                    }
+                if (randRoom == 0) {
+                    dungeon[i][j] = new Room(i, j, "loot");
+                } else {
+                    dungeon[i][j] = new Room(i, j, "battle");
                 }
             }
         }
